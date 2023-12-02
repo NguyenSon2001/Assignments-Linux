@@ -1,0 +1,12 @@
+.vscode
+
+GeneralTopics/CreateShaLib/objs
+GeneralTopics/CreateShaLib/libs
+GeneralTopics/CreateShaLib/bin
+
+GeneralTopics/CreateStaLib/objs
+GeneralTopics/CreateStaLib/libs
+GeneralTopics/CreateStaLib/bin
+
+.run
+
