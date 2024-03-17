@@ -20,6 +20,8 @@ void *thread_handler(void *arg)
     {
         printf("i'm thread_id2\n ");
         printf("%s |%s |%s |%d\n", data->hoTen, data->namSinh, data->queQuan, data->sdt);
+
+        data->sdt = 20;
     }
     else if (pthread_equal(tid, pthread_id1))
     {
@@ -56,6 +58,7 @@ int main()
     }
 
     sleep(5);
+    printf("%d", myHuman.sdt);
     printf("main exit");
     return 0;
 }

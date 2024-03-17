@@ -1,0 +1,9 @@
+total 48
+-rwxrwxr-x 1 son son  8304 Jan 25 04:23 a.out
+-rwxrwxr-x 1 son son 13560 Jan 23 06:32 exam.run
+-rw-rw-r-- 1 son son     0 Jan 25 04:25 file.lst
+-rw-rw-r-- 1 son son    29 Jan 25 04:24 file.txt
+-rw-rw-r-- 1 son son  6709 Jan 23 06:33 main.c
+-rw-rw-r-- 1 son son   228 Jan 25 04:15 Makefile
+-rw-rw-r-- 1 son son     0 Jan 25 04:12 terminal.c
+-rw-rw-r-- 1 son son   151 Jan 25 04:24 test.c
