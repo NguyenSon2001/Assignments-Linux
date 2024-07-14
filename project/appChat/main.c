@@ -107,7 +107,8 @@ void readSend(int socket_fd, char IP[20])
     do
     {
         mess = read(socket_fd, buf, sizeof(buf));
-        if (mess == -1) {
+        if (mess == -1)
+        {
             perror("reading stream message");
             break;
         }
@@ -119,10 +120,13 @@ void readSend(int socket_fd, char IP[20])
                 break;
             }
         }
-        else
+        else if (mess > 0)
+        {
+
             printf("\n**************************************************\n");
-        printf("send from %s --> %s\n", IP, buf);
-        printf("**************************************************\n");
+            printf("send from %s --> %s\n", IP, buf);
+            printf("**************************************************\n");
+        }
 
     } while (mess > 0);
 
@@ -408,11 +412,18 @@ int main(int argc, char *argv[])
                 }
                 i--;
             }
-
-            if (close(sfd) != -1)
+            if (shutdown(sfd, SHUT_WR) == -1)
             {
-                printf("Done terminate connection id %d\n", con_id);
+                perror("shutdown");
+                return -1;
             }
+
+            printf("Done terminate connection id %d\n", con_id);
+
+            // if (close(sfd) != -1)
+            // {
+            //     printf("Done terminate connection id %d\n", con_id);
+            // }
         }
         else if (strcmp(com[0], "send") == 0)
         {
@@ -439,7 +450,7 @@ int main(int argc, char *argv[])
             if (sfd > 0)
             {
                 // printf("msg id=%ld\n", msg[i - 1].priority);
-                if (write(sfd, com[2], sizeof com[2]) == -1)
+                if (write(sfd, com[2], strlen(com[2])) == -1)
                     perror("write()");
             }
             else
@@ -457,10 +468,6 @@ int main(int argc, char *argv[])
                 }
                 i--;
             }
-        }
-
-        else if (strcmp(com[0], "terminate") == 0)
-        {
         }
 
         else if (strcmp(com[0], "exit") == 0)
