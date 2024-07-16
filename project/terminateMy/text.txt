@@ -1,0 +1,8 @@
+total 48
+-rw-rw-r-- 1 son son    36 Jul 16 02:48 asd
+-rw-r--r-- 1 son son    36 Jul 16 03:16 ass
+-rwxrwxr-x 1 son son 22864 Jul 16 07:39 build.run
+-rw-rw-r-- 1 son son   163 Jul 15 02:05 Makefile
+-rw-rw-r-- 1 son son  4668 Jul 16 07:39 myTerminal.c
+-rw-rw-r-- 1 son son     2 Jul 16 03:02 numberof.are
+-rw-rw-r-- 1 son son     0 Jul 16 07:40 text.txt
