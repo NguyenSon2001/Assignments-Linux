@@ -52,7 +52,6 @@ int process_ex(char *str_input)
     int size[10];
     int piped = 0;
 
-
     piped = parsePipe(str_input, strpiped);
     if (piped < 0)
         return -1;
@@ -70,67 +69,75 @@ int process_ex(char *str_input)
     else
     {
         char **commands[MAXPIPE];
-        for (int i = 0; i <= piped ; i++)
+        for (int i = 0; i <= piped; i++)
         {
             size[i] = parseSpace(strpiped[i], parsed[i]);
             commands[i] = parsed[i];
-
         }
-            execMultipleCommands(commands, piped +1,size);
-            
+        execMultipleCommands(commands, piped + 1, size);
     }
-    return 0;  // Thêm return 0 ở cuối hàm để đảm bảo hàm luôn trả về giá trị
+    return 0; // Thêm return 0 ở cuối hàm để đảm bảo hàm luôn trả về giá trị
 }
-
 
 void execMultipleCommands(char ***commands, int numCommands, int sizeOfCommand[])
 {
     int i;
-    int pipefd[2*numCommands]; // Tạo nhiều pipe, mỗi pipe gồm 2 phần tử
+    int pipefd[2 * numCommands]; // Tạo nhiều pipe, mỗi pipe gồm 2 phần tử
 
     // Tạo đủ các pipe cần thiết
-    for (i = 0; i < numCommands-1; i++) {
-        if (pipe(pipefd + i*2) < 0) {
+    for (i = 0; i < numCommands - 1; i++)
+    {
+        if (pipe(pipefd + i * 2) < 0)
+        {
             perror("Pipe creation failed");
             exit(EXIT_FAILURE);
         }
     }
 
-    for (i = 0; i < numCommands; i++) {
+    for (i = 0; i < numCommands; i++)
+    {
         pid_t pid = fork();
-        if (pid < 0) {
+        if (pid < 0)
+        {
             perror("Fork failed");
             exit(EXIT_FAILURE);
         }
-        
-        if (pid == 0) {
-            if (parseToken(commands[i], sizeOfCommand[i]) < 0)
+
+        if (pid == 0)
         {
-            exit(0);
-        }
+            if (parseToken(commands[i], sizeOfCommand[i]) < 0)
+            {
+                exit(0);
+            }
             // Child process
-            if (i > 0) {
+            if (i > 0)
+            {
                 // Nếu không phải là lệnh đầu tiên, lấy đầu vào từ pipe trước đó
-                if (dup2(pipefd[(i-1)*2], STDIN_FILENO) < 0) {
+                if (dup2(pipefd[(i - 1) * 2], STDIN_FILENO) < 0)
+                {
                     perror("dup2 failed");
                     exit(EXIT_FAILURE);
                 }
             }
-            if (i < numCommands-1) {
+            if (i < numCommands - 1)
+            {
                 // Nếu không phải là lệnh cuối cùng, ghi đầu ra vào pipe hiện tại
-                if (dup2(pipefd[i*2 + 1], STDOUT_FILENO) < 0) {
+                if (dup2(pipefd[i * 2 + 1], STDOUT_FILENO) < 0)
+                {
                     perror("dup2 failed");
                     exit(EXIT_FAILURE);
                 }
             }
 
             // Đóng tất cả các pipe trong tiến trình con
-            for (int j = 0; j < 2*(numCommands-1); j++) {
+            for (int j = 0; j < 2 * (numCommands - 1); j++)
+            {
                 close(pipefd[j]);
             }
 
             // Thực thi lệnh
-            if (execvp(commands[i][0], commands[i]) < 0) {
+            if (execvp(commands[i][0], commands[i]) < 0)
+            {
                 perror("Command execution failed");
                 exit(EXIT_FAILURE);
             }
@@ -138,12 +145,14 @@ void execMultipleCommands(char ***commands, int numCommands, int sizeOfCommand[]
     }
 
     // Đóng tất cả các pipe trong tiến trình cha
-    for (i = 0; i < 2*(numCommands-1); i++) {
+    for (i = 0; i < 2 * (numCommands - 1); i++)
+    {
         close(pipefd[i]);
     }
 
     // Chờ tất cả các tiến trình con kết thúc
-    for (i = 0; i < numCommands; i++) {
+    for (i = 0; i < numCommands; i++)
+    {
         wait(NULL);
     }
 }
@@ -171,12 +180,10 @@ int execCommand(char **parsed, int lenParsed)
         }
         exit(0);
     }
-    
-    
-        // waiting for child to terminate
-        wait(NULL);
-        return 0;
-    
+
+    // waiting for child to terminate
+    wait(NULL);
+    return 0;
 }
 
 int parseToken(char **parsed, int lenParsed)
